@@ -1,3 +1,4 @@
+// components/button.tsx
 import { ButtonHTMLAttributes } from "react";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -21,14 +22,17 @@ export default function Button(props: ButtonProps) {
     lg: "text-lg px-4 py-2",
   };
 
-  const { className, variant, size, ...rest } = props;
+  const { className, variant, size, children, type, ...rest } = props;
 
   return (
     <button
+      type={type ?? "button"} // avoid accidental form submit
       {...rest}
-      className={`${variant ? variants[variant] : variants["default"]} ${
-        size ? sizes[size] : sizes["base"]
+      className={`${variant ? variants[variant] : variants.default} ${
+        size ? sizes[size] : sizes.base
       } ${className ?? ""}`}
-    ></button>
+    >
+      {children} {/* ← render children */}
+    </button>
   );
 }

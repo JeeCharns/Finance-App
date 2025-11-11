@@ -1,4 +1,5 @@
 import { useFormatCurrency } from "@/hooks/use-format-currency";
+import type { ComponentType, SVGProps } from "react";
 import { HandCoins, Wallet, Landmark, PiggyBank } from "lucide-react";
 
 type TransactionType = "Income" | "Expense" | "Saving" | "Investment";
@@ -16,7 +17,10 @@ export default function TransactionItem({
   description,
   amount,
 }: TransactionItemProps) {
-  const typesMap: Record<TransactionType, { icon: any; colors: string }> = {
+  const typesMap: Record<
+    TransactionType,
+    { icon: ComponentType<SVGProps<SVGSVGElement>>; colors: string }
+  > = {
     Income: {
       icon: HandCoins,
       colors: "text-green-500 dark:text-green-400",

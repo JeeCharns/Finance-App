@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode variant in v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @add-plugin "@tailwindcss/forms";
 
 body {

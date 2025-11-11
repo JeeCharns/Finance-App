@@ -1,16 +1,32 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// ✅ This runs before hydration to prevent theme flashing
+function ThemeNoFlash() {
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+(function() {
+  try {
+    var m = document.cookie.match(/(?:^|; )theme=([^;]+)/);
+    var theme = m ? decodeURIComponent(m[1]) : null;
+    if (!theme) {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  } catch (e) {}
+})();
+`,
+      }}
+    />
+  );
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,15 +35,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <ThemeNoFlash />
+      </head>
+      <body className={`${inter} antialiased min-h-screen flex flex-col px-8`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

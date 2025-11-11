@@ -1,4 +1,3 @@
-import React from "react";
 import { useMemo } from "react";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { useFormatCurrency } from "@/hooks/use-format-currency";
