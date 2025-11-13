@@ -55,6 +55,30 @@
       "amount": 100,
       "created_at": "2020-11-11T00:00:00",
       "description": "clothes"
+    },
+    {
+      "id": "50ba",
+      "type": "Expense",
+      "category": "Food",
+      "amount": 10,
+      "created_at": "2025-01-01",
+      "description": "test"
+    },
+    {
+      "id": "70c0",
+      "type": "Expense",
+      "category": "Food",
+      "amount": 10,
+      "created_at": "2025-11-11",
+      "description": "test"
+    },
+    {
+      "id": "ec33",
+      "type": "Income",
+      "category": "Food",
+      "amount": 10,
+      "created_at": "2025-11-11",
+      "description": "test"
     }
   ],
   "trends": [

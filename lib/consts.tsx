@@ -1,4 +1,5 @@
-export const types = ["Income", "Expense", "Saving", "Investment"];
+export const types = ["Income", "Expense", "Saving", "Investment"] as const;
+export type TransactionType = (typeof types)[number];
 
 export const categories = [
   "Food",

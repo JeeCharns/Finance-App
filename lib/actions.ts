@@ -1,13 +1,27 @@
-// lib/actions.ts
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { createClient } from "./supabase/server";
+import { transactionSchema } from "./validation";
 
-export async function purgeTransactionListCache(): Promise<void> {
-  // Typings in some builds require the 2nd arg; runtime accepts "max"
-  // If TS complains, keep the cast.
-  (revalidateTag as unknown as (tag: string, profile?: string) => void)(
-    "transaction-list",
-    "max"
-  );
+export async function createTransaction(formData: {
+  type: "Income" | "Expense" | "Saving" | "Investment";
+  amount: number;
+  description: string;
+  category?: string;
+  created_at: string;
+}): Promise<void> {
+  const validated = transactionSchema.safeParse(formData);
+  if (!validated.success) {
+    throw new Error("Invalid form data");
+  }
+  console.log(formData);
+  const supabase = await createClient(); // <- await here
+  const { error } = await supabase.from("transactions").insert(validated.data);
+
+  if (error) {
+    throw new Error("Failed creating the transaction");
+  }
+
+  revalidatePath("/dashboard");
 }

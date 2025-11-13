@@ -8,14 +8,14 @@ import Button from "@/components/button";
 import { types, categories } from "@/lib/consts";
 import { useForm, SubmitHandler, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { transactionSchema } from "@/lib/validation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { purgeTransactionListCache } from "@/lib/actions";
+import { createTransaction } from "@/lib/actions";
 import FormError from "@/components/form-error";
+import { TransactionFormValues } from "@/lib/validation";
 
-type FormValues = z.infer<typeof transactionSchema>;
+type FormValues = TransactionFormValues;
 
 export default function TransactionForm() {
   const zodFormResolver: Resolver<FormValues> = zodResolver(
@@ -33,22 +33,16 @@ export default function TransactionForm() {
   const router = useRouter();
 
   const [isSaving, setSaving] = useState(false);
+  const [lastError, setLastError] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setSaving(true);
+    setLastError(null);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-          created_at: `${data.created_at}T00:00:00`,
-        }),
-      });
-      await purgeTransactionListCache();
+      await createTransaction(data);
       router.push("/dashboard");
+    } catch (error) {
+      setLastError((error as Error).message);
     } finally {
       setSaving(false);
     }
@@ -127,7 +121,10 @@ export default function TransactionForm() {
         </div>
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <div>
+          <FormError error={lastError ? { message: lastError } : null} />
+        </div>
         <Button type="submit" disabled={isSaving}>
           Save
         </Button>
