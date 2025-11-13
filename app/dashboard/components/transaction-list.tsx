@@ -31,34 +31,40 @@ const groupandSumTransactionsByDate = (
   return grouped;
 };
 
-// components/transaction-list.tsx
 export default async function TransactionList() {
-  const res = await fetch("http://localhost:3100/transactions", {
-    cache: "no-store",
+  const res = await fetch(`${process.env.API_URL}/transactions`, {
+    next: { tags: ["transaction-list"] },
   });
   const transactions = (await res.json()) as Transaction[];
 
   const grouped = groupandSumTransactionsByDate(transactions);
 
+  const sortedDates = Object.keys(grouped).sort((a, b) => {
+    return new Date(b).getTime() - new Date(a).getTime(); // newest → oldest
+  });
+
   return (
     <div className="space-y-8">
-      {Object.entries(grouped).map(([date, { transactions, amount }]) => (
-        <div key={date} className="space-y-4">
-          <TransactionSummaryItem date={date} amount={amount} />
-          <Separator />
-          <section className="space-y-4">
-            {transactions.map((transaction) => (
-              <TransactionItem
-                key={transaction.id}
-                type={transaction.type}
-                category={transaction.category}
-                description={transaction.description}
-                amount={transaction.amount}
-              />
-            ))}
-          </section>
-        </div>
-      ))}
+      {sortedDates.map((date) => {
+        const { transactions, amount } = grouped[date];
+        return (
+          <div key={date} className="space-y-4">
+            <TransactionSummaryItem date={date} amount={amount} />
+            <Separator />
+            <section className="space-y-4">
+              {transactions.map((transaction) => (
+                <TransactionItem
+                  key={transaction.id}
+                  type={transaction.type}
+                  category={transaction.category}
+                  description={transaction.description}
+                  amount={transaction.amount}
+                />
+              ))}
+            </section>
+          </div>
+        );
+      })}
     </div>
   );
 }
