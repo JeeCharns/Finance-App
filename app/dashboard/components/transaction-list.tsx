@@ -46,6 +46,12 @@ export default function TransactionList({
     return new Date(b).getTime() - new Date(a).getTime(); // newest → oldest
   });
 
+  const handleRemoved = (id: string) => () => {
+    setTransactions((prevTransactions) =>
+      prevTransactions.filter((transaction) => transaction.id !== id)
+    );
+  };
+
   return (
     <div className="space-y-8">
       {sortedDates.map((date) => {
@@ -62,6 +68,8 @@ export default function TransactionList({
                   category={transaction.category}
                   description={transaction.description}
                   amount={transaction.amount}
+                  id={transaction.id}
+                  onRemoved={handleRemoved(transaction.id)}
                 />
               ))}
             </section>

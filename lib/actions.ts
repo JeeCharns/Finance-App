@@ -44,3 +44,18 @@ export async function fetchTransactions(
   // data is Transaction[] | null
   return (data ?? []) as Transaction[];
 }
+
+export async function deleteTransaction(id: string): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error(`Failed deleting the transaction $(id)`);
+  }
+
+  revalidatePath("/dashboard");
+}
