@@ -7,7 +7,7 @@ import { transactionSchema } from "./validation";
 export async function createTransaction(formData: {
   type: "Income" | "Expense" | "Saving" | "Investment";
   amount: number;
-  description: string;
+  description?: string;
   category?: string;
   created_at: string;
 }): Promise<void> {

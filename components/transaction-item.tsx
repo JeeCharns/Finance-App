@@ -50,7 +50,7 @@ export default function TransactionItem({
 
       <div className="min-w-[150px] items-center hidden md:flex">
         {category && (
-          <div className="rounded-md text-xs bg-gray-700 dark:bg-gray-100 text-gray-100 dark:text-black px-2 py-0.5">
+          <div className="rounded-md text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-0.5">
             {category}
           </div>
         )}

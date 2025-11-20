@@ -9,7 +9,7 @@ import { types, categories } from "@/lib/consts";
 import { useForm, SubmitHandler, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema } from "@/lib/validation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createTransaction } from "@/lib/actions";
 import FormError from "@/components/form-error";
@@ -26,14 +26,27 @@ export default function TransactionForm() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<FormValues>({
     mode: "onTouched",
     resolver: zodFormResolver,
+    defaultValues: {
+      type: types[0], // e.g. "Income" or whatever your first type is
+      category: "", // placeholder value
+    },
   });
   const router = useRouter();
 
   const [isSaving, setSaving] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
+  const type = watch("type");
+
+  useEffect(() => {
+    if (type !== "Expense") {
+      setValue("category", ""); // reset to placeholder
+    }
+  }, [type, setValue]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setSaving(true);
@@ -75,9 +88,17 @@ export default function TransactionForm() {
           </Label>
           <Select
             id="category"
-            {...register("category", { required: true })}
-            defaultValue={categories[0]}
+            disabled={type !== "Expense"}
+            {...register("category", {
+              required:
+                type === "Expense"
+                  ? "Category is required for expenses"
+                  : false,
+            })}
           >
+            <option value="" disabled>
+              Select a category
+            </option>
             {categories.map((c) => (
               <option key={c} value={c}>
                 {c}

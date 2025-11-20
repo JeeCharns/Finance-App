@@ -41,7 +41,7 @@ export default function Trend({ type, amount, prevAmount }: TrendProps) {
         {percentageChange > 0 && (
           <ArrowUpRight className="w-4 h-4 text-green-700 dark:text-green-300" />
         )}
-        <div>{` ${percentageChange}%`}</div>
+        <div>{` ${percentageChange}%`} since last period</div>
       </div>
     </div>
   );
