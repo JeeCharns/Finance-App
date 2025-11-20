@@ -1,4 +1,4 @@
-import TransactionList from "./components/transaction-list";
+import TransactionListWrapper from "./components/transaction-list-wrapper";
 import { Suspense } from "react";
 import TransactionListFallback from "./components/transaction-list-fallback";
 import Trend from "./components/trend";
@@ -52,7 +52,7 @@ export default async function Page({
       </section>
 
       <Suspense fallback={<TransactionListFallback />}>
-        <TransactionList />
+        <TransactionListWrapper range={range} />
       </Suspense>
     </>
   );
