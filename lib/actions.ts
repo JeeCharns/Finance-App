@@ -87,3 +87,22 @@ export async function updateTransaction(
 
   revalidatePath("/dashboard");
 }
+
+type LoginState = { message: string; error: boolean };
+
+export async function login(
+  _prevState: LoginState,
+  formData: FormData
+): Promise<LoginState> {
+  const email = formData.get("email");
+
+  if (!email || typeof email !== "string" || !email.includes("@")) {
+    return { message: "Please enter a valid email address.", error: true };
+  }
+
+  if (email === "gjcharnley@gmail.com") {
+    return { message: "Login successful!", error: false };
+  }
+
+  return { message: "Invalid email", error: true };
+}

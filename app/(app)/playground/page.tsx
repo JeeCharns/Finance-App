@@ -36,19 +36,27 @@ export default function Page() {
         <h2 className="mb-4 text-lg font-mono">TransactionItem</h2>
         <Separator />
         <div className="space-y-4">
-          <TransactionItem type="Income" description="Salary" amount={2000} />
           <TransactionItem
+            id="1"
+            type="Income"
+            description="Salary"
+            amount={2000}
+          />
+          <TransactionItem
+            id="1"
             type="Expense"
             category="Food"
             description="Going out to eat"
             amount={29}
           />
           <TransactionItem
+            id="1"
             type="Saving"
             description="For children"
             amount={500}
           />
           <TransactionItem
+            id="1"
             type="Investment"
             description="In Microsoft"
             amount={9000}
@@ -64,19 +72,27 @@ export default function Page() {
         <div className="space-y-4">
           <TransactionSummaryItem date="2024-05-01" amount={3500} />
           <Separator />
-          <TransactionItem type="Income" description="Salary" amount={2000} />
           <TransactionItem
+            id="1"
+            type="Income"
+            description="Salary"
+            amount={2000}
+          />
+          <TransactionItem
+            id="1"
             type="Expense"
             category="Food"
             description="Going out to eat"
             amount={29}
           />
           <TransactionItem
+            id="1"
             type="Saving"
             description="For children"
             amount={500}
           />
           <TransactionItem
+            id="1"
             type="Investment"
             description="In Microsoft"
             amount={9000}

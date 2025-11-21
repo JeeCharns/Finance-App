@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import PageHeader from "@/components/page-header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,10 +47,7 @@ export default function RootLayout({
         className={`${inter.className} antialiased min-h-screen flex flex-col px-8`}
       >
         <Providers>
-          {/* ✅ Header is now guaranteed to be inside CookiesProvider */}
-          <PageHeader className="my-8" />
-          <main>{children}</main>
-          <footer className="mt-auto text-center py-8">Footer</footer>
+          <main className="flex-1">{children}</main>
         </Providers>
       </body>
     </html>

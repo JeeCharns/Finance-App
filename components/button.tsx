@@ -2,7 +2,7 @@
 import { ButtonHTMLAttributes } from "react";
 import { sizes, variants } from "@/lib/variants";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default" | "outline" | "ghost" | "danger";
   size?: "xs" | "sm" | "base" | "lg";
 };
@@ -12,13 +12,13 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
-      type={type ?? "button"} // avoid accidental form submit
+      type={type ?? "button"}
       {...rest}
       className={`${variant ? variants[variant] : variants.default} ${
         size ? sizes[size] : sizes.base
       } ${className ?? ""}`}
     >
-      {children} {/* ← render children */}
+      {children}
     </button>
   );
 }
