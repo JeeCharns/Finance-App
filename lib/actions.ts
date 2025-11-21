@@ -59,3 +59,31 @@ export async function deleteTransaction(id: string): Promise<void> {
 
   revalidatePath("/dashboard");
 }
+
+export async function updateTransaction(
+  id: string,
+  formData: {
+    type: "Income" | "Expense" | "Saving" | "Investment";
+    amount: number;
+    description?: string;
+    category?: string;
+    created_at: string;
+  }
+): Promise<void> {
+  const validated = transactionSchema.safeParse(formData);
+  if (!validated.success) {
+    throw new Error("Invalid form data");
+  }
+  console.log(formData);
+  const supabase = await createClient(); // <- await here
+  const { error } = await supabase
+    .from("transactions")
+    .update(validated.data)
+    .eq("id", id);
+
+  if (error) {
+    throw new Error("Failed updating the transaction");
+  }
+
+  revalidatePath("/dashboard");
+}

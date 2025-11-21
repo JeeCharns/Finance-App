@@ -8,6 +8,8 @@ const TransactionFormNoSSR = dynamic(
   { ssr: false }
 );
 
-export default function TransactionFormClient() {
-  return <TransactionFormNoSSR />;
+export default function TransactionFormClient(
+  props: Record<string, unknown> = {}
+) {
+  return <TransactionFormNoSSR {...props} />;
 }

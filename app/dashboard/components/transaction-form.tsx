@@ -11,13 +11,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema } from "@/lib/validation";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createTransaction } from "@/lib/actions";
+import { createTransaction, updateTransaction } from "@/lib/actions";
 import FormError from "@/components/form-error";
 import { TransactionFormValues } from "@/lib/validation";
 
 type FormValues = TransactionFormValues;
+type TransactionFormProps = Partial<FormValues> & { id?: string };
 
-export default function TransactionForm() {
+export default function TransactionForm(props: TransactionFormProps) {
   const zodFormResolver: Resolver<FormValues> = zodResolver(
     transactionSchema
   ) as unknown as Resolver<FormValues>;
@@ -31,16 +32,18 @@ export default function TransactionForm() {
   } = useForm<FormValues>({
     mode: "onTouched",
     resolver: zodFormResolver,
-    defaultValues: {
-      type: types[0], // e.g. "Income" or whatever your first type is
-      category: "", // placeholder value
+    defaultValues: props ?? {
+      created_at: new Date().toISOString().split("T")[0],
+      type: types[0],
+      category: "",
     },
   });
-  const router = useRouter();
 
+  const router = useRouter();
   const [isSaving, setSaving] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
   const type = watch("type");
+  const editing = !!props.id;
 
   useEffect(() => {
     if (type !== "Expense") {
@@ -52,7 +55,12 @@ export default function TransactionForm() {
     setSaving(true);
     setLastError(null);
     try {
-      await createTransaction(data);
+      if (editing && props.id) {
+        await updateTransaction(props.id, data);
+      } else {
+        await createTransaction(data);
+      }
+
       router.push("/dashboard");
     } catch (error) {
       setLastError((error as Error).message);
@@ -116,6 +124,7 @@ export default function TransactionForm() {
             id="created_at"
             type="date" // ← native date picker, always dd/mm/yyyy
             {...register("created_at", { required: "A date is required" })}
+            disabled={editing}
           />
           <FormError error={errors.created_at} />
         </div>
