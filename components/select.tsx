@@ -16,6 +16,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
 
   return (
     <select
+      suppressHydrationWarning
       ref={ref}
       disabled={disabled}
       className={`${baseClasses} ${

@@ -17,3 +17,5 @@ export const categories = [
   "Miscellaneous",
   "Other",
 ];
+
+export const dateRangeValues = ["last7days", "last30days", "last12months"];

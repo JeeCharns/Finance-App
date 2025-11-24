@@ -32,10 +32,12 @@ export default function TransactionForm(props: TransactionFormProps) {
   } = useForm<FormValues>({
     mode: "onTouched",
     resolver: zodFormResolver,
-    defaultValues: props ?? {
-      created_at: new Date().toISOString().split("T")[0],
-      type: types[0],
-      category: "",
+    defaultValues: {
+      type: props.type ?? types[0],
+      category: props.category ?? "",
+      amount: props.amount ?? 0,
+      created_at: props.created_at ?? new Date().toISOString().split("T")[0],
+      description: props.description ?? "",
     },
   });
 
@@ -63,7 +65,7 @@ export default function TransactionForm(props: TransactionFormProps) {
 
       router.push("/dashboard");
     } catch (error) {
-      setLastError((error as Error).message);
+      setLastError((error as Error)?.message);
     } finally {
       setSaving(false);
     }
@@ -87,7 +89,7 @@ export default function TransactionForm(props: TransactionFormProps) {
               </option>
             ))}
           </Select>
-          <FormError error={errors.type} />
+          <FormError error={errors.type?.message ? { message: errors.type.message } : null} />
         </div>
 
         <div>
@@ -113,7 +115,13 @@ export default function TransactionForm(props: TransactionFormProps) {
               </option>
             ))}
           </Select>
-          <FormError error={errors.category} />
+          <FormError
+            error={
+              errors.category?.message
+                ? { message: errors.category.message }
+                : null
+            }
+          />
         </div>
 
         <div>
@@ -126,7 +134,13 @@ export default function TransactionForm(props: TransactionFormProps) {
             {...register("created_at", { required: "A date is required" })}
             disabled={editing}
           />
-          <FormError error={errors.created_at} />
+          <FormError
+            error={
+              errors.created_at?.message
+                ? { message: errors.created_at.message }
+                : null
+            }
+          />
         </div>
 
         <div>
@@ -139,7 +153,11 @@ export default function TransactionForm(props: TransactionFormProps) {
             step="0.01"
             {...register("amount")}
           />
-          <FormError error={errors.amount} />
+          <FormError
+            error={
+              errors.amount?.message ? { message: errors.amount.message } : null
+            }
+          />
         </div>
 
         <div className="col-span-1 md:col-span-2">
@@ -147,7 +165,13 @@ export default function TransactionForm(props: TransactionFormProps) {
             Description
           </Label>
           <Input id="description" {...register("description")} />
-          <FormError error={errors.description} />
+          <FormError
+            error={
+              errors.description?.message
+                ? { message: errors.description.message }
+                : null
+            }
+          />
         </div>
       </div>
 

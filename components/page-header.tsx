@@ -3,10 +3,10 @@ import Link from "next/link";
 import DarkModeToggle from "./dark-mode-toggle";
 import { getServerDarkMode } from "@/hooks/get-server-dark-mode";
 import { createClient } from "@/lib/supabase/server";
-import Button from "@/components/button";
-import { CircleUser, KeyRound } from "lucide-react";
-import { variants } from "@/lib/variants";
+import { KeyRound } from "lucide-react";
+import { variants, sizes } from "@/lib/variants";
 import SignOutButton from "./sign-out-button";
+import Avatar from "@/app/(app)/dashboard/components/avatar";
 
 export default async function PageHeader({
   className,
@@ -29,14 +29,17 @@ export default async function PageHeader({
       <div className="flex items-center space-x-2 py-6">
         <DarkModeToggle defaultMode={theme} />
         {user && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center space-x-1"
+          <Link
+            href="/dashboard/settings"
+            className={`flex items-center space-x-2 ${variants.ghost} ${sizes.sm}`}
           >
-            <CircleUser className="w-6 h-6 mr-2" />
-            <span>{user?.email}</span>
-          </Button>
+            <Avatar />
+            <span>
+              {user?.user_metadata?.fullName ??
+                user?.user_metadata?.full_name ??
+                user?.email}
+            </span>
+          </Link>
         )}
         {user && <SignOutButton />}
         {!user && (

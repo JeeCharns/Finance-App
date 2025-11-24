@@ -1,12 +1,12 @@
 export const variants = {
   default:
-    "bg-black text-white dark:bg-white dark:text-black rounded-md hover:bg-gray-700 dark:hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none",
+    "bg-black text-white dark:bg-white dark:text-black rounded-md hover:bg-gray-700 dark:hover:bg-gray-200 disabled:opacity-50",
   outline:
-    "border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 disabled:opacity-50 disabled:pointer-events-none",
+    "border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 disabled:opacity-50",
   ghost:
-    "rounded-md bg-white dark:bg-black hover:bg-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:pointer-events-none",
+    "rounded-md bg-white dark:bg-black hover:bg-gray-200 dark:hover:bg-gray-500 disabled:opacity-50",
   danger:
-    "bg-red-500 text-white dark:bg-red-500 rounded-md hover:bg-red-600 dark:hover:bg-red-400 disabled:opacity-75 disabled:pointer-events-none",
+    "bg-red-500 text-white dark:bg-red-500 rounded-md hover:bg-red-700 dark:hover:bg-red-700 disabled:opacity-50",
 };
 export const sizes = {
   xs: "text-xs px-2 py-1",

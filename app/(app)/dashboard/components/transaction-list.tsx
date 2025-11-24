@@ -79,7 +79,7 @@ export default function TransactionList({
         );
       })}
       {transactions.length === 0 && (
-        <div className="text-center text-gray-400 dark:text-gray-500">
+        <div className="text-center text-gray-400 dark:text-gray-500 py-24">
           No transactions found.
         </div>
       )}

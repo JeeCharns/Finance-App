@@ -1,14 +1,18 @@
 "use client";
-import Select from "@/components/select";
+import DateRangeSelect from "@/components/date-range-select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ChangeEvent } from "react";
 
-export default function Range() {
+type RangeProps = {
+  defaultView?: string;
+};
+
+export default function Range({ defaultView }: RangeProps) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const range = searchParams.get("range") ?? "last30days";
+  const range = searchParams.get("range") ?? defaultView ?? "last30days";
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     // keep existing params and just update range
@@ -17,11 +21,5 @@ export default function Range() {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  return (
-    <Select value={range} onChange={handleChange}>
-      <option value="last7days">Last 7 days</option>
-      <option value="last30days">Last 30 days</option>
-      <option value="last12months">Last 12 months</option>
-    </Select>
-  );
+  return <DateRangeSelect value={range} onChange={handleChange} />;
 }

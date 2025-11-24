@@ -1,6 +1,15 @@
 // lib/validation.ts
 import { z } from "zod";
-import { categories, types } from "@/lib/consts";
+import { categories, dateRangeValues, types } from "@/lib/consts";
+
+export const settingsSchema = z.object({
+  fullName: z
+    .string()
+    .trim()
+    .min(1, "Full name is required")
+    .max(120, "Full name is too long"),
+  defaultView: z.enum(dateRangeValues, "Invalid default view"),
+});
 
 export const transactionSchema = z
   .object({
