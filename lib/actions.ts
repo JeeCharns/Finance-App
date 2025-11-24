@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { transactionSchema } from "./validation";
 import type { Transaction } from "./utils";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function createTransaction(formData: {
   type: "Income" | "Expense" | "Saving" | "Investment";
@@ -95,14 +97,34 @@ export async function login(
   formData: FormData
 ): Promise<LoginState> {
   const email = formData.get("email");
+  const headersList = await headers();
+  const origin = headersList.get("origin");
 
-  if (!email || typeof email !== "string" || !email.includes("@")) {
-    return { message: "Please enter a valid email address.", error: true };
+  const redirectTo =
+    process.env.NEXT_PUBLIC_SITE_URL && process.env.NEXT_PUBLIC_SITE_URL.length
+      ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/confirm`
+      : origin
+      ? `${origin}/auth/confirm`
+      : undefined;
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithOtp({
+    email: email as string,
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: redirectTo,
+    },
+  });
+
+  if (error) {
+    return { message: "Error authenticating", error: true };
   }
 
-  if (email === "gjcharnley@gmail.com") {
-    return { message: "Login successful!", error: false };
-  }
+  return { message: `Login link sent to ${email}`, error: false };
+}
 
-  return { message: "Invalid email", error: true };
+export async function signOut(): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signOut();
+  redirect("/login");
 }

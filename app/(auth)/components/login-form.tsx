@@ -2,7 +2,7 @@
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
 import { login } from "@/lib/actions";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 const initialState = {
   message: "",
@@ -10,9 +10,13 @@ const initialState = {
 };
 
 export default function LoginForm() {
-  const [state, formAction] = useFormState(login, initialState);
+  const [state, formAction] = useActionState(login, initialState);
   return (
-    <form action={formAction} className="flex flex-col gap-8">
+    <form
+      suppressHydrationWarning
+      action={formAction}
+      className="flex flex-col gap-8"
+    >
       <Input
         name="email"
         type="email"

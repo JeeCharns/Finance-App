@@ -12,6 +12,7 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
+      suppressHydrationWarning
       type={type ?? "button"}
       {...rest}
       className={`${variant ? variants[variant] : variants.default} ${

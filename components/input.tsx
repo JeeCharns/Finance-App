@@ -10,6 +10,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   return (
     <input
+      suppressHydrationWarning
       ref={ref}
       className={`w-full rounded-md border p-2 border-gray-300
                   bg-white dark:border-gray-700 dark:bg-gray-950 disabled:opacity-70 ${
